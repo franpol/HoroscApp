@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aristidevs.horoscapp.databinding.FragmentHoroscopeBinding
+import com.aristidevs.horoscapp.ui.horoscope.adapter.HoroscopeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -18,23 +20,36 @@ import kotlinx.coroutines.launch
 class HoroscopeFragment : Fragment() {
     private val horoscopeViewModel by viewModels<HoroscopeViewModel>()
 
+    private lateinit var horoscopeAdapter: HoroscopeAdapter
+
     private var _binding: FragmentHoroscopeBinding? = null
     private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-     initUi()
+        initUi()
     }
 
     private fun initUi() {
         initUIState()
+        intiList()
+    }
+
+    private fun intiList() {
+        horoscopeAdapter = HoroscopeAdapter()
+        binding.rvHoroscope.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = horoscopeAdapter
+        }
+
     }
 
     private fun initUIState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle (Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 horoscopeViewModel.horoscope.collect {
-                    Log.i("franpol", it.toString())
+                    //CAMBIOS EN HOROSCOPE
+                    horoscopeAdapter.updateList(it)
                 }
             }
         }
@@ -44,7 +59,7 @@ class HoroscopeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding  = FragmentHoroscopeBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentHoroscopeBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
