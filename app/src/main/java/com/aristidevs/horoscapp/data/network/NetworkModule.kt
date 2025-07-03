@@ -20,4 +20,9 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    @Provides
+    fun provideHoroscopeApiService(retrofit: Retrofit) : HoroscopeApiService {
+        return retrofit.create(HoroscopeApiService::class.java)
+    }
 }
