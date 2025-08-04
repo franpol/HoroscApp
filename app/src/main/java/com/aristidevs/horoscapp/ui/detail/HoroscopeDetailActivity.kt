@@ -1,5 +1,23 @@
 package com.aristidevs.horoscapp.ui.detail
-
+/**
+ * La Pantalla
+ *
+ * Flujo:
+ *  (1) muestra la UI y el usuario interactúa
+ *  (2) observa / interactúa con [HoroscopeDetailViewModel]
+ *  (12) observa los cambios en [HoroscopeDetailState] (y actualiza la UI)
+ *
+ * Es la "pantalla" donde el usuario ve los detalles de un horóscopo.
+ * Observa el HoroscopeDetailState actualizado y muestra la predicción al usuario.
+ *
+ * Responsabilidad: Es la parte visual. Recibe un signo (ej. "Aries") que le llega de la MainActivity (probablemente a través de un Intent).
+ * Su trabajo es pedirle al ViewModel la predicción para ese signo y mostrarla cuando la reciba.
+ *
+ * Intervención de Dagger Hilt: Dagger Hilt inyecta el HoroscopeDetailViewModel en la HoroscopeDetailActivity.
+ * Esto permite que la Activity acceda al ViewModel sin tener que crearlo manualmente ni preocuparse de sus dependencias internas.
+ *
+ * Se ubica en ui porque es la representación visual directa para el usuario.
+ */
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -36,6 +54,7 @@ class HoroscopeDetailActivity : AppCompatActivity() {
             insets
         }
         initUI()
+        horoscopeDetailViewModel.getHoroscope(args.type.name)
     }
 
     private fun initUI() {
@@ -49,7 +68,7 @@ class HoroscopeDetailActivity : AppCompatActivity() {
                     when(it){
                         HoroscopeDetailState.Loading -> loadingState()
                         is HoroscopeDetailState.Error -> errorState()
-                        is HoroscopeDetailState.Success -> successState()
+                        is HoroscopeDetailState.Success -> successState(it)
                     }
                 }
             }
@@ -61,10 +80,12 @@ class HoroscopeDetailActivity : AppCompatActivity() {
     }
 
     private fun errorState() {
-
+        binding.pb.isVisible = false
     }
 
-    private fun successState() {
-
+    private fun successState(state: HoroscopeDetailState.Success) {
+        binding.pb.isVisible = false
+        binding.tvTitle.text = state.sign
+        binding.tvBody.text = state.prediction
     }
 }

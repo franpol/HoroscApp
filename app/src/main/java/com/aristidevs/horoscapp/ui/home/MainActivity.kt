@@ -1,5 +1,11 @@
 package com.aristidevs.horoscapp.ui.home
-
+/**
+ * Pantalla Principal que muestra los horoscopos
+ *
+ * Flujo:
+ *  (1) Observa los cambios en [HoroscopeViewModel]
+ *  (5) Muestra los HoroscopeModel al usuario.
+ */
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity

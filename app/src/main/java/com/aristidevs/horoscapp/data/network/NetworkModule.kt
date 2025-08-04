@@ -1,5 +1,13 @@
 package com.aristidevs.horoscapp.data.network
-
+/**
+ * Configuración de Red - Dagger Hilt
+ *
+ * Le enseña a Dagger Hilt a crear las herramientas para hablar con la API.
+ *
+ * Se ubica en network porque agrupa la configuración de cómo se construyen los componentes de red.
+ */
+import com.aristidevs.horoscapp.data.RepositoryImpl
+import com.aristidevs.horoscapp.domain.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +32,10 @@ object NetworkModule {
     @Provides
     fun provideHoroscopeApiService(retrofit: Retrofit) : HoroscopeApiService {
         return retrofit.create(HoroscopeApiService::class.java)
+    }
+
+    @Provides
+    fun provideRepository(apiService: HoroscopeApiService): Repository{
+        return RepositoryImpl(apiService)
     }
 }
