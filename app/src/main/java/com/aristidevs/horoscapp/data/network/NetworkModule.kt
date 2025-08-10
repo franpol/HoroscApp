@@ -6,7 +6,9 @@ package com.aristidevs.horoscapp.data.network
  *
  * Se ubica en network porque agrupa la configuración de cómo se construyen los componentes de red.
  */
+import com.aristidevs.horoscapp.BuildConfig.BASE_URL
 import com.aristidevs.horoscapp.data.RepositoryImpl
+import com.aristidevs.horoscapp.data.core.interceptors.AuthInterceptor
 import com.aristidevs.horoscapp.domain.Repository
 import dagger.Module
 import dagger.Provides
@@ -27,7 +29,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit
             .Builder()
-            .baseUrl("https://newastro.vercel.app/")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -35,12 +37,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient():OkHttpClient{
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor):OkHttpClient{
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         return OkHttpClient
             .Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(authInterceptor)
             .build()
     }
 

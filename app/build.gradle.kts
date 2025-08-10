@@ -21,12 +21,19 @@ android {
     }
 
     buildTypes {
-        release {
+        /*Uso getByName() para release y debug porque si quisiera usar staging,
+          tienen que usar esa sintaxis, y prefieren no mezclar estilos.
+         */
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"https://newastro.vercel.app/\"" )
+        }
+        getByName("debug") {
+            buildConfigField("String", "BASE_URL", "\"https://newastro-debug.vercel.app/\"" )
         }
     }
     compileOptions {
@@ -38,6 +45,7 @@ android {
     }
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 }
 
