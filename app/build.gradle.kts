@@ -30,9 +30,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue("string", "arisname", "HoroscApp")
             buildConfigField("String", "BASE_URL", "\"https://newastro.vercel.app/\"" )
         }
         getByName("debug") {
+            resValue("string", "arisname", "DEBUG HoroscApp")
             buildConfigField("String", "BASE_URL", "\"https://newastro-debug.vercel.app/\"" )
         }
     }
