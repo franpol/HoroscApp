@@ -20,6 +20,7 @@ package com.aristidevs.horoscapp.ui.detail
  * Se ubica en ui porque es la representación visual directa para el usuario.
  */
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -77,9 +78,18 @@ class HoroscopeDetailActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 horoscopeDetailViewModel.state.collect {
                     when (it) {
-                        HoroscopeDetailState.Loading -> loadingState()
-                        is HoroscopeDetailState.Error -> errorState()
-                        is HoroscopeDetailState.Success -> successState(it)
+                        HoroscopeDetailState.Loading -> {
+                            Log.d("franpol", "Estado: Loading")
+                            loadingState()
+                        }
+                        is HoroscopeDetailState.Error -> {
+                            Log.d("franpol", "Estado: Error")
+                            errorState()
+                        }
+                        is HoroscopeDetailState.Success -> {
+                            Log.d("franpol", "Estado: Success")
+                            successState(it)
+                        }
                     }
                 }
             }
